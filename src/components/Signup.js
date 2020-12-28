@@ -7,7 +7,8 @@ export default function Signup() {
   const emailRef = useRef()
   const passwordRef = useRef()
   const passwordConfirmRef = useRef()
-  const { signup } = useAuth()
+  const usernameRef= useRef()
+  const { signup, addUserInfo } = useAuth()
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const history = useHistory()
@@ -22,12 +23,36 @@ export default function Signup() {
     try {
       setError("")
       setLoading(true)
-      await signup(emailRef.current.value, passwordRef.current.value)
+      const userinfo = await signup(emailRef.current.value, passwordRef.current.value)
+      console.log(userinfo.user.uid)
+      const userdata = {
+        uid: userinfo.user.uid,
+        username: usernameRef.current.value
+      }
+      await addUserInfo(userdata)
       history.push("/")
-    } catch {
-      setError("Failed to create an account")
+    } catch (error){
+      // setError("Failed to create an account")
+      console.log(error)
     }
 
+    setLoading(false)
+  }
+
+  function submitdata(e){
+    e.preventDefault();
+    setError("")
+    setLoading(true)
+    signup(emailRef.current.value, passwordRef.current.value)
+    .then(res =>{
+      return res.user.updateProfile({
+        displayName: usernameRef.current.value
+      }).then(()=>{
+        history.push("/")
+      })
+    }).catch(error =>{
+      console.log(error)
+    })
     setLoading(false)
   }
 
@@ -37,7 +62,11 @@ export default function Signup() {
         <Card.Body>
           <h2 className="text-center mb-4">Sign Up</h2>
           {error && <Alert variant="danger">{error}</Alert>}
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={submitdata}>
+          <Form.Group id="username">
+              <Form.Label>User name</Form.Label>
+              <Form.Control type="text" ref={usernameRef} required />
+            </Form.Group>            
             <Form.Group id="email">
               <Form.Label>Email</Form.Label>
               <Form.Control type="email" ref={emailRef} required />

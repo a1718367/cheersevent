@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react"
 import { Card, Button, Alert } from "react-bootstrap"
-import { useAuth } from "../contexts/AuthContext"
-import { Link, useHistory } from "react-router-dom"
+import { useAuth } from "../contexts/AuthContext";
+import { Link, useHistory } from "react-router-dom";
+import {db} from "../firebase"
 
 export default function Dashboard() {
   const [error, setError] = useState("")
-  const { currentUser, logout } = useAuth()
+  const { currentUser, logout, getUserInfo } = useAuth()
   const history = useHistory()
-
+  
   async function handleLogout() {
     setError("")
 
@@ -18,13 +19,13 @@ export default function Dashboard() {
       setError("Failed to log out")
     }
   }
-  
+
 
   return (
     <>
       <Card>
         <Card.Body>
-          <h2 className="text-center mb-4">Profile</h2>
+          <h2 className="text-center mb-4">{currentUser.displayName} Profile</h2>
           {error && <Alert variant="danger">{error}</Alert>}
           <strong>Email:</strong> {currentUser.email}
           <Link to="/update-profile" className="btn btn-primary w-100 mt-3">
@@ -32,6 +33,9 @@ export default function Dashboard() {
           </Link>
           <Link to="/addwinery" className="btn btn-primary w-100 mt-3">
             Add Winery
+          </Link>
+          <Link to="/business" className="btn btn-primary w-100 mt-3">
+            Business
           </Link>
         </Card.Body>
       </Card>

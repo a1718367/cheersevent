@@ -15,11 +15,15 @@ export function AuthProvider({ children }) {
   function signup(email, password) {
     return auth.createUserWithEmailAndPassword(email, password)
   }
-
+  function addUserInfo(userinfo){
+    return db.collection("userinfo").add(userinfo)
+  }
   function login(email, password) {
     return auth.signInWithEmailAndPassword(email, password)
   }
-
+  function getUserInfo(uid){
+    return db.collection("userinfo").where("uid", "==", uid).get()
+  }
   function logout() {
     return auth.signOut()
   }
@@ -53,7 +57,9 @@ export function AuthProvider({ children }) {
     logout,
     resetPassword,
     updateEmail,
-    updatePassword
+    updatePassword,
+    addUserInfo,
+    getUserInfo
   }
 
   return (
