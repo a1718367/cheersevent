@@ -13,6 +13,7 @@ export default function Signup() {
   const [loading, setLoading] = useState(false)
   const history = useHistory()
 
+  // Function for adding additional user info
   async function handleSubmit(e) {
     e.preventDefault()
 
@@ -32,13 +33,13 @@ export default function Signup() {
       await addUserInfo(userdata)
       history.push("/")
     } catch (error){
-      // setError("Failed to create an account")
       console.log(error)
     }
 
     setLoading(false)
   }
 
+  //Function for signup
   function submitdata(e){
     e.preventDefault();
     setError("")

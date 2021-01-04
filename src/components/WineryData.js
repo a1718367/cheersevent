@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {useData} from '../contexts/Context'
 import Winery from './Winery'
 import {useAuth} from "../contexts/AuthContext"
+import {Container} from "react-bootstrap"
 
 export default function WineryData() {
     const {currentUser} = useAuth()
@@ -30,7 +31,8 @@ export default function WineryData() {
         const fres = res.docs.map((result)=>{
             return {
                 wineryid: result.id,
-                wineryname: result.data().wineryname
+                wineryname: result.data().wineryname,
+                wineryaddress: result.data().wineryaddress
             }
         })
         setwinerydata(fres)
@@ -41,13 +43,13 @@ export default function WineryData() {
     }
     
     return (
-        <div>
+        <Container>
             <h2> {username}'s Winery</h2>
             {winerydata? 
         <Winery data={winerydata} />
         : <div></div>
         }
             
-        </div>
+        </Container>
     )
 }

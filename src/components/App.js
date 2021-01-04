@@ -10,19 +10,21 @@ import ForgotPassword from "./ForgotPassword"
 import UpdateProfile from "./UpdateProfile"
 import Addwinery from "./Addwinery";
 import Business from "./Business";
+import Navibar from "./Navbar/Navibar"
+import TitleBanner from "../components/Jumbotron/TitleBanner";
+import Userprofile from "../components/Userprofile/Userprofile"
 
 function App() {
   return (
-    <Container
-      className="d-flex align-items-center justify-content-center"
-      style={{ minHeight: "100vh" }}
-    >
-      <div className="w-100" style={{ maxWidth: "400px" }}>
+    <>
         <Router>
           <AuthProvider>
+            <Navibar />
+            <TitleBanner />
             <Switch>
               <PrivateRoute exact path="/" component={Dashboard} />
               <PrivateRoute path="/update-profile" component={UpdateProfile} />
+              <PrivateRoute path="/userprofile" component={Userprofile} />
               <PrivateRoute path="/addwinery" component={Addwinery} />
               <Route path="/business" component={Business}/>
               <Route path="/signup" component={Signup} />
@@ -31,8 +33,7 @@ function App() {
             </Switch>
           </AuthProvider>
         </Router>
-      </div>
-    </Container>
+    </>
   )
 }
 
